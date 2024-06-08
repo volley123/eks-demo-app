@@ -20,10 +20,21 @@ spec:
       - image: 423966983147.dkr.ecr.us-east-2.amazonaws.com/solar-app-ecr:solar-planet-v1
         imagePullPolicy: Always
         name: solar-system
+        env:
+          - name: MONGO_CONN_STR
+            value: mongodb://mongodb-svc:27017/superData?directConnection=true
+          - name: MONGO_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-db-creds
+                key: username
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-db-creds
+                key: password
         ports:
         - containerPort: 3000
           name: http
           protocol: TCP
-        envFrom:
-        - secretRef:
-            name: mongo-db-creds
+          
