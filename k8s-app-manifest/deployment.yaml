@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: solar-system
+  name: solar-system
+  namespace: space
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: solar-system
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: solar-system
+    spec:
+      containers:
+      - image: 423966983147.dkr.ecr.us-east-2.amazonaws.com/solar-app-ecr:solar-planet-v1
+        imagePullPolicy: Always
+        name: solar-system
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        envFrom:
+        - secretRef:
+            name: mongo-db-creds
